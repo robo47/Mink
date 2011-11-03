@@ -1,0 +1,1 @@
+<pre><?php echo file_get_contents($_FILES['somearray']['tmp_name']['uploadfile']);  ?></pre>

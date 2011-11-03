@@ -260,6 +260,25 @@ abstract class GeneralDriverTest extends TestCase
         $this->assertEquals('Firstname: Konstantin', $page->find('css', '#first')->getText());
         $this->assertEquals('Lastname: Kudryashov', $page->find('css', '#last')->getText());
     }
+    
+    public function testUploadFormWithArrayNamedField()
+    {
+        $this->getSession()->visit($this->pathTo('/upload_form.php'));
+        $page = $this->getSession()->getPage();
+
+        $uploadfile = $page->findField('somearray[uploadfile]');
+        $uploadfile->attachFile(__DIR__ . '/web-fixtures/some_file.txt');
+
+        $button = $page->findButton('Upload');
+
+        $button->press();
+
+        $this->assertContains(
+                '<pre>' . file_get_contents(__DIR__ . '/web-fixtures/some_file.txt') . '</pre>'
+                , $page->getContent()
+        );
+    }
+
 
     public function testAdvancedForm()
     {
